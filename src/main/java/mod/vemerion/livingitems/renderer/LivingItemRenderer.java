@@ -1,6 +1,8 @@
 package mod.vemerion.livingitems.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
 
 import mod.vemerion.livingitems.entity.LivingItemEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -10,7 +12,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Items;
 
 public class LivingItemRenderer extends EntityRenderer<LivingItemEntity> {
 
@@ -22,15 +23,20 @@ public class LivingItemRenderer extends EntityRenderer<LivingItemEntity> {
 	}
 
 	@Override
-	public void render(LivingItemEntity entity, float p_114486_, float p_114487_, PoseStack poseStack,
-			MultiBufferSource source, int p_114490_) {
-		super.render(entity, p_114486_, p_114487_, poseStack, source, p_114490_);
+	public void render(LivingItemEntity entity, float yaw, float partialTicks, PoseStack poseStack,
+			MultiBufferSource source, int light) {
+		super.render(entity, yaw, partialTicks, poseStack, source, light);
 
 		poseStack.pushPose();
-		var scale = 0.5f;
-		poseStack.scale(scale, scale, scale);
-		poseStack.translate(0, scale, 0);
-		itemRenderer.renderStatic(Items.APPLE.getDefaultInstance(), ItemTransforms.TransformType.FIXED, 15728880,
+		var baseScale = 0.5f;
+		poseStack.scale(baseScale, baseScale, baseScale);
+		poseStack.translate(0, baseScale, 0);
+		var offset = entity.getAnimationOffset(partialTicks);
+		poseStack.translate(offset.x(), offset.y(), offset.z());
+		poseStack.mulPose(Quaternion.fromXYZ(new Vector3f(entity.getAnimationRotation(partialTicks))));
+		var scale = entity.getAnimationScale(partialTicks);
+		poseStack.scale((float) scale.x, (float) scale.y, (float) scale.z);
+		itemRenderer.renderStatic(entity.getItemStack(), ItemTransforms.TransformType.FIXED, light,
 				OverlayTexture.NO_OVERLAY, poseStack, source, entity.getId());
 		poseStack.popPose();
 	}

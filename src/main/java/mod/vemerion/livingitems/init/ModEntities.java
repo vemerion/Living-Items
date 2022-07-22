@@ -19,7 +19,8 @@ public class ModEntities {
 			Main.MODID);
 
 	public static final RegistryObject<EntityType<LivingItemEntity>> LIVING_ITEM = ENTITIES.register("living_item",
-			() -> EntityType.Builder.of(LivingItemEntity::new, MobCategory.CREATURE).sized(0.5f, 0.5f).build(""));
+			() -> EntityType.Builder.<LivingItemEntity>of(LivingItemEntity::new, MobCategory.CREATURE).sized(0.5f, 0.5f)
+					.build(""));
 
 	@SubscribeEvent
 	public static void onRegisterEntityAttributes(EntityAttributeCreationEvent event) {
