@@ -8,6 +8,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
@@ -58,6 +59,12 @@ public class LivingItemEntity extends Mob {
 			MobSpawnType pReason, SpawnGroupData pSpawnData, CompoundTag pDataTag) {
 		setAnimationVariant((byte) getRandom().nextInt(ANIMATION_VARIANT_COUNT));
 		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+	}
+	
+	@Override
+	protected void dropCustomDeathLoot(DamageSource pSource, int pLooting, boolean pRecentlyHit) {
+		super.dropCustomDeathLoot(pSource, pLooting, pRecentlyHit);
+		spawnAtLocation(getItemStack());
 	}
 
 	@Override
