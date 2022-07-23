@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "livingitems:block/item_awakener",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "livingitems:block/item_awakener"
+    },
+    "facing=north": {
+      "model": "livingitems:block/item_awakener",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "livingitems:block/item_awakener",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "livingitems:block/item_awakener",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "livingitems:block/item_awakener",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

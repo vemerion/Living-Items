@@ -1,6 +1,8 @@
 package mod.vemerion.livingitems;
 
+import mod.vemerion.livingitems.init.ModBlocks;
 import mod.vemerion.livingitems.init.ModEntities;
+import mod.vemerion.livingitems.init.ModItems;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -11,5 +13,7 @@ public class Main {
 	public Main() {
 		var bus = FMLJavaModLoadingContext.get().getModEventBus();
 		ModEntities.ENTITIES.register(bus);
+		ModBlocks.BLOCKS.register(bus);
+		ModItems.ITEMS.register(bus);
 	}
 }
