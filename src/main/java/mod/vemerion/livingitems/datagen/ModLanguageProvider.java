@@ -16,5 +16,15 @@ public class ModLanguageProvider extends LanguageProvider {
 	protected void addTranslations() {
 		add(ModEntities.LIVING_ITEM.get(), "Living Item");
 		add(ModBlocks.ITEM_AWAKENER.get(), "Item Awakener");
+
+		addGui("denylist", "Denylist");
+		addGui("allowlist", "Allowlist");
+		addGui("sender", "Sender");
+		addGui("receiver", "Receiver");
+		addGui("id_box_default", "id...");
+	}
+
+	void addGui(String suffix, String translation) {
+		add(Main.guiTranslationKey(suffix), translation);
 	}
 }

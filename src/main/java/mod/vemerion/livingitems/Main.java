@@ -3,6 +3,7 @@ package mod.vemerion.livingitems;
 import mod.vemerion.livingitems.init.ModBlocks;
 import mod.vemerion.livingitems.init.ModEntities;
 import mod.vemerion.livingitems.init.ModItems;
+import mod.vemerion.livingitems.init.ModMenus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -15,5 +16,10 @@ public class Main {
 		ModEntities.ENTITIES.register(bus);
 		ModBlocks.BLOCKS.register(bus);
 		ModItems.ITEMS.register(bus);
+		ModMenus.MENUS.register(bus);
+	}
+
+	public static String guiTranslationKey(String suffix) {
+		return "gui." + MODID + "." + suffix;
 	}
 }

@@ -1,4 +1,9 @@
 {
   "block.livingitems.item_awakener": "Item Awakener",
-  "entity.livingitems.living_item": "Living Item"
+  "entity.livingitems.living_item": "Living Item",
+  "gui.livingitems.allowlist": "Allowlist",
+  "gui.livingitems.denylist": "Denylist",
+  "gui.livingitems.id_box_default": "id...",
+  "gui.livingitems.receiver": "Receiver",
+  "gui.livingitems.sender": "Sender"
 }

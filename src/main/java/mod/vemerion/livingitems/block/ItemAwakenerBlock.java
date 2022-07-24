@@ -6,10 +6,21 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 
+import mod.vemerion.livingitems.menu.ItemAwakenerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -17,9 +28,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.network.NetworkHooks;
 
 public class ItemAwakenerBlock extends Block {
 
@@ -66,6 +79,27 @@ public class ItemAwakenerBlock extends Block {
 			LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pNeighborPos) {
 		return pDirection.getOpposite() == pState.getValue(BlockStateProperties.FACING)
 				&& !pState.canSurvive(pLevel, pCurrentPos) ? Blocks.AIR.defaultBlockState() : pState;
+	}
+
+	@Override
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand,
+			BlockHitResult hit) {
+		if (!level.isClientSide) {
+			NetworkHooks.openGui((ServerPlayer) player, new MenuProvider() {
+
+				@Override
+				public AbstractContainerMenu createMenu(int pContainerId, Inventory pInventory, Player pPlayer) {
+					return new ItemAwakenerMenu(pContainerId, pInventory, ContainerLevelAccess.create(level, pos));
+				}
+
+				@Override
+				public Component getDisplayName() {
+					return ItemAwakenerBlock.this.getName();
+				}
+
+			}, pos);
+		}
+		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
 
 }
