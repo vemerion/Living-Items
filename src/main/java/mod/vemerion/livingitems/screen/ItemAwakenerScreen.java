@@ -25,7 +25,7 @@ public class ItemAwakenerScreen extends AbstractContainerScreen<ItemAwakenerMenu
 	private static final Component ID_BOX_DEFAULT = (new TranslatableComponent(
 			Main.guiTranslationKey("id_box_default"))).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY);
 
-	private EditBox idBox;
+	private EditBox linkIdBox;
 
 	public ItemAwakenerScreen(ItemAwakenerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
 		super(pMenu, pPlayerInventory, pTitle);
@@ -46,6 +46,7 @@ public class ItemAwakenerScreen extends AbstractContainerScreen<ItemAwakenerMenu
 					b.setMessage(new TranslatableComponent(
 							Main.guiTranslationKey(menu.isDenylistEnabled() ? "denylist" : "allowlist")));
 				}));
+		toggleDenylist.visible = menu.isSender();
 
 		// Sender/Receiver toggle
 		addRenderableWidget(new Button(leftPos + 40 - 60 / 2, topPos + 65, 60, 20,
@@ -57,12 +58,12 @@ public class ItemAwakenerScreen extends AbstractContainerScreen<ItemAwakenerMenu
 				}));
 
 		// Id text box
-		idBox = new EditBox(minecraft.font, leftPos + 25, topPos + 40, 27, 9 + 5, ID_BOX_DEFAULT);
-		idBox.setMaxLength(3);
-		idBox.setFilter(s -> s != null && s.matches("^[0-9]*$"));
-		var id = menu.getId();
-		if (id != -1)
-			idBox.setValue(String.valueOf(id));
+		linkIdBox = new EditBox(minecraft.font, leftPos + 25, topPos + 40, 27, 9 + 5, ID_BOX_DEFAULT);
+		linkIdBox.setMaxLength(3);
+		linkIdBox.setFilter(s -> s != null && s.matches("^[0-9]*$"));
+		var linkId = menu.getlinkId();
+		if (linkId != -1)
+			linkIdBox.setValue(String.valueOf(linkId));
 	}
 
 	@Override
@@ -74,9 +75,9 @@ public class ItemAwakenerScreen extends AbstractContainerScreen<ItemAwakenerMenu
 		int y = (height - imageHeight) / 2;
 		blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
 
-		idBox.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
-		if (!idBox.isFocused() && idBox.getValue().isEmpty())
-			drawString(pPoseStack, minecraft.font, ID_BOX_DEFAULT, idBox.x + 4, idBox.y + 4, 0xffffffff);
+		linkIdBox.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+		if (!linkIdBox.isFocused() && linkIdBox.getValue().isEmpty())
+			drawString(pPoseStack, minecraft.font, ID_BOX_DEFAULT, linkIdBox.x + 4, linkIdBox.y + 4, 0xffffffff);
 		RenderSystem.setShaderColor(1, 1, 1, 1);
 
 		// Hide filter slots if item awakener is receiver
@@ -92,23 +93,23 @@ public class ItemAwakenerScreen extends AbstractContainerScreen<ItemAwakenerMenu
 
 	@Override
 	protected void containerTick() {
-		idBox.tick();
+		linkIdBox.tick();
 	}
 
 	@Override
 	public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-		if (idBox.mouseClicked(pMouseX, pMouseY, pButton))
+		if (linkIdBox.mouseClicked(pMouseX, pMouseY, pButton))
 			return true;
 		return super.mouseClicked(pMouseX, pMouseY, pButton);
 	}
 
 	@Override
 	public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-		if (idBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
-			if (!idBox.getValue().isEmpty())
-				menu.setId(Integer.valueOf(idBox.getValue()));
+		if (linkIdBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
+			if (!linkIdBox.getValue().isEmpty())
+				menu.setlinkId(Integer.valueOf(linkIdBox.getValue()));
 			return true;
-		} else if (idBox.isFocused() && idBox.isVisible() && pKeyCode != GLFW.GLFW_KEY_ESCAPE) {
+		} else if (linkIdBox.isFocused() && linkIdBox.isVisible() && pKeyCode != GLFW.GLFW_KEY_ESCAPE) {
 			return true;
 		}
 
@@ -117,12 +118,18 @@ public class ItemAwakenerScreen extends AbstractContainerScreen<ItemAwakenerMenu
 
 	@Override
 	public boolean charTyped(char pCodePoint, int pModifiers) {
-		if (idBox.charTyped(pCodePoint, pModifiers)) {
-			if (!idBox.getValue().isEmpty())
-				menu.setId(Integer.valueOf(idBox.getValue()));
+		if (linkIdBox.charTyped(pCodePoint, pModifiers)) {
+			if (!linkIdBox.getValue().isEmpty())
+				menu.setlinkId(Integer.valueOf(linkIdBox.getValue()));
 			return true;
 		}
 		return super.charTyped(pCodePoint, pModifiers);
+	}
+
+	@Override
+	public void onClose() {
+		super.onClose();
+		menu.sendMessage();
 	}
 
 }

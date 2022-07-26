@@ -5,6 +5,10 @@ import org.lwjgl.glfw.GLFW;
 import mod.vemerion.livingitems.blockentity.ItemAwakenerBlockEntity;
 import mod.vemerion.livingitems.init.ModBlocks;
 import mod.vemerion.livingitems.init.ModMenus;
+import mod.vemerion.livingitems.network.ItemAwakenerMessage;
+import mod.vemerion.livingitems.network.Network;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -28,18 +32,21 @@ public class ItemAwakenerMenu extends AbstractContainerMenu {
 
 	private ItemStackHandler filter;
 	private final ContainerLevelAccess access;
-	private boolean denylistEnabled = true;
-	private boolean sender = true;
-	private int id = -1;
+	private ItemAwakenerBlockEntity.Data data;
+	private BlockPos pos;
 
-	public ItemAwakenerMenu(int id, Inventory playerInv) {
-		this(id, playerInv, new ItemAwakenerBlockEntity.StackHandler(), ContainerLevelAccess.NULL);
+	public ItemAwakenerMenu(int id, Inventory playerInv, FriendlyByteBuf buffer) {
+		this(id, playerInv, new ItemStackHandler(ItemAwakenerBlockEntity.FILTER_SIZE), ContainerLevelAccess.NULL,
+				new ItemAwakenerBlockEntity.Data(buffer), buffer.readBlockPos());
 	}
 
-	public ItemAwakenerMenu(int id, Inventory playerInv, ItemStackHandler filter, ContainerLevelAccess access) {
-		super(ModMenus.ITEM_AWAKENER_MENU.get(), id);
+	public ItemAwakenerMenu(int containerId, Inventory playerInv, ItemStackHandler filter, ContainerLevelAccess access,
+			ItemAwakenerBlockEntity.Data data, BlockPos pos) {
+		super(ModMenus.ITEM_AWAKENER_MENU.get(), containerId);
 		this.filter = filter;
 		this.access = access;
+		this.data = data;
+		this.pos = pos;
 
 		// filter
 		for (int y = 0; y < FILTER_LENGTH; y++) {
@@ -73,27 +80,27 @@ public class ItemAwakenerMenu extends AbstractContainerMenu {
 	}
 
 	public void toggleDenylist() {
-		denylistEnabled = !denylistEnabled;
+		data.isDenylistEnabled = !data.isDenylistEnabled;
 	}
 
 	public boolean isDenylistEnabled() {
-		return denylistEnabled;
+		return data.isDenylistEnabled;
 	}
 
 	public void toggleSender() {
-		sender = !sender;
+		data.isSender = !data.isSender;
 	}
 
 	public boolean isSender() {
-		return sender;
+		return data.isSender;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setlinkId(int linkId) {
+		data.linkId = linkId;
 	}
 
-	public int getId() {
-		return id;
+	public int getlinkId() {
+		return data.linkId;
 	}
 
 	@Override
@@ -122,6 +129,11 @@ public class ItemAwakenerMenu extends AbstractContainerMenu {
 		public boolean isActive() {
 			return ItemAwakenerMenu.this.isSender();
 		}
+	}
+
+	// Sync values from client to server
+	public void sendMessage() {
+		Network.INSTANCE.sendToServer(new ItemAwakenerMessage(data, pos));
 	}
 
 }
