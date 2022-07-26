@@ -1,6 +1,7 @@
 package mod.vemerion.livingitems;
 
 import mod.vemerion.livingitems.init.ModBlocks;
+import mod.vemerion.livingitems.init.ModBlocksEntities;
 import mod.vemerion.livingitems.init.ModEntities;
 import mod.vemerion.livingitems.init.ModItems;
 import mod.vemerion.livingitems.init.ModMenus;
@@ -17,6 +18,7 @@ public class Main {
 		ModBlocks.BLOCKS.register(bus);
 		ModItems.ITEMS.register(bus);
 		ModMenus.MENUS.register(bus);
+		ModBlocksEntities.BLOCKS_ENTITIES.register(bus);
 	}
 
 	public static String guiTranslationKey(String suffix) {

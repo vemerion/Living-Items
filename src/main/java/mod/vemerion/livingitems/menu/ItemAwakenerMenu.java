@@ -2,6 +2,7 @@ package mod.vemerion.livingitems.menu;
 
 import org.lwjgl.glfw.GLFW;
 
+import mod.vemerion.livingitems.blockentity.ItemAwakenerBlockEntity;
 import mod.vemerion.livingitems.init.ModBlocks;
 import mod.vemerion.livingitems.init.ModMenus;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,18 +26,19 @@ public class ItemAwakenerMenu extends AbstractContainerMenu {
 	public static final int FILTER_LEFT_OFFSET = 80;
 	public static final int FILTER_TOP_OFFSET = 36;
 
-	private ItemStackHandler filter = new ItemAwakenerStackHandler(FILTER_LENGTH * FILTER_LENGTH);
+	private ItemStackHandler filter;
 	private final ContainerLevelAccess access;
 	private boolean denylistEnabled = true;
 	private boolean sender = true;
 	private int id = -1;
 
 	public ItemAwakenerMenu(int id, Inventory playerInv) {
-		this(id, playerInv, ContainerLevelAccess.NULL);
+		this(id, playerInv, new ItemAwakenerBlockEntity.StackHandler(), ContainerLevelAccess.NULL);
 	}
 
-	public ItemAwakenerMenu(int id, Inventory playerInv, ContainerLevelAccess access) {
+	public ItemAwakenerMenu(int id, Inventory playerInv, ItemStackHandler filter, ContainerLevelAccess access) {
 		super(ModMenus.ITEM_AWAKENER_MENU.get(), id);
+		this.filter = filter;
 		this.access = access;
 
 		// filter
@@ -110,24 +112,12 @@ public class ItemAwakenerMenu extends AbstractContainerMenu {
 		super.clicked(index, button, clickType, player);
 	}
 
-	private static class ItemAwakenerStackHandler extends ItemStackHandler {
-
-		private ItemAwakenerStackHandler(int size) {
-			super(size);
-		}
-
-		@Override
-		public int getSlotLimit(int slot) {
-			return 1;
-		}
-	}
-
 	private class FilterSlot extends SlotItemHandler {
 
 		private FilterSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
 			super(itemHandler, index, xPosition, yPosition);
 		}
-		
+
 		@Override
 		public boolean isActive() {
 			return ItemAwakenerMenu.this.isSender();
