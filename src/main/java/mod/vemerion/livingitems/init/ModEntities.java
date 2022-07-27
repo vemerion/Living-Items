@@ -3,7 +3,6 @@ package mod.vemerion.livingitems.init;
 import mod.vemerion.livingitems.Main;
 import mod.vemerion.livingitems.entity.LivingItemEntity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,6 +23,6 @@ public class ModEntities {
 
 	@SubscribeEvent
 	public static void onRegisterEntityAttributes(EntityAttributeCreationEvent event) {
-		event.put(LIVING_ITEM.get(), Mob.createMobAttributes().build());
+		event.put(LIVING_ITEM.get(), LivingItemEntity.createAttributes().build());
 	}
 }

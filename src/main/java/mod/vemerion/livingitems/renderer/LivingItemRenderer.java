@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class LivingItemRenderer extends EntityRenderer<LivingItemEntity> {
 
@@ -28,8 +29,11 @@ public class LivingItemRenderer extends EntityRenderer<LivingItemEntity> {
 		super.render(entity, yaw, partialTicks, poseStack, source, light);
 
 		poseStack.pushPose();
+		var direction = Mth.rotLerp(partialTicks, entity.yBodyRotO, entity.yBodyRot);
+		poseStack.mulPose(Vector3f.YP.rotationDegrees(180 - direction));
+
 		var baseScale = 0.5f;
-		poseStack.scale(baseScale, baseScale, baseScale);
+		poseStack.scale(-baseScale, baseScale, -baseScale);
 		poseStack.translate(0, baseScale, 0);
 		var offset = entity.getAnimationOffset(partialTicks);
 		poseStack.translate(offset.x(), offset.y(), offset.z());

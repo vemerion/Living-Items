@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.ImmutableMap;
 
 import mod.vemerion.livingitems.blockentity.ItemAwakenerBlockEntity;
+import mod.vemerion.livingitems.init.ModBlocksEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,6 +23,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -90,4 +93,21 @@ public class ItemAwakenerBlock extends Block implements EntityBlock {
 		return new ItemAwakenerBlockEntity(pPos, pState);
 	}
 
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState,
+			BlockEntityType<T> pBlockEntityType) {
+		return pBlockEntityType == ModBlocksEntities.ITEM_AWAKENER.get()
+				? (level, pos, state, tileEntity) -> ((ItemAwakenerBlockEntity) tileEntity).tick()
+				: null;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+		if (!pState.is(pNewState.getBlock())
+				&& pLevel.getBlockEntity(pPos) instanceof ItemAwakenerBlockEntity itemAwakener)
+			itemAwakener.onRemove();
+
+		super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+	}
 }

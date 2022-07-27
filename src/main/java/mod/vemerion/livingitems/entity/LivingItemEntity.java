@@ -1,6 +1,8 @@
 package mod.vemerion.livingitems.entity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -13,6 +15,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.Llama;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -29,6 +33,8 @@ public class LivingItemEntity extends Mob {
 	private static final EntityDataAccessor<ItemStack> ITEM_STACK = SynchedEntityData.defineId(Llama.class,
 			EntityDataSerializers.ITEM_STACK);
 
+	private static final int MOVE_COOLDOWN = 40;
+
 	private static final byte ANIMATION_VARIANT_COUNT = 5;
 	private static final byte ANIMATION_JUMP = 0;
 	private static final byte ANIMATION_WALK = 1;
@@ -43,15 +49,24 @@ public class LivingItemEntity extends Mob {
 	private Vec3 animationOffset0 = Vec3.ZERO;
 	private Vec3 animationScale0 = new Vec3(1, 1, 1);
 
+	private BlockPos receiver;
+	private int moveCooldown = MOVE_COOLDOWN;
+
 	public LivingItemEntity(EntityType<? extends LivingItemEntity> type, Level level) {
 		super(type, level);
 		setPersistenceRequired();
 		xpReward = 0;
 	}
 
-	public LivingItemEntity(EntityType<? extends LivingItemEntity> type, Level level, ItemStack stack) {
+	public LivingItemEntity(EntityType<? extends LivingItemEntity> type, Level level, ItemStack stack,
+			BlockPos receiver) {
 		this(type, level);
 		setItemStack(stack);
+		this.receiver = receiver;
+	}
+
+	public static AttributeSupplier.Builder createAttributes() {
+		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20).add(Attributes.MOVEMENT_SPEED, 0.2);
 	}
 
 	@Override
@@ -60,7 +75,7 @@ public class LivingItemEntity extends Mob {
 		setAnimationVariant((byte) getRandom().nextInt(ANIMATION_VARIANT_COUNT));
 		return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
 	}
-	
+
 	@Override
 	protected void dropCustomDeathLoot(DamageSource pSource, int pLooting, boolean pRecentlyHit) {
 		super.dropCustomDeathLoot(pSource, pLooting, pRecentlyHit);
@@ -89,6 +104,10 @@ public class LivingItemEntity extends Mob {
 	public ItemStack getItemStack() {
 		return entityData.get(ITEM_STACK);
 	}
+	
+	public BlockPos getReceiver() {
+		return receiver;
+	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag pCompound) {
@@ -97,6 +116,8 @@ public class LivingItemEntity extends Mob {
 			setAnimationVariant(pCompound.getByte("animationVariant"));
 		if (pCompound.contains("itemStack"))
 			setItemStack(ItemStack.of(pCompound.getCompound("itemStack")));
+		if (pCompound.contains("receiver"))
+			receiver = NbtUtils.readBlockPos(pCompound.getCompound("receiver"));
 	}
 
 	@Override
@@ -104,6 +125,9 @@ public class LivingItemEntity extends Mob {
 		super.addAdditionalSaveData(pCompound);
 		pCompound.putByte("animationVariant", getAnimationVariant());
 		pCompound.put("itemStack", getItemStack().serializeNBT());
+
+		if (receiver != null)
+			pCompound.put("receiver", NbtUtils.writeBlockPos(receiver));
 	}
 
 	@Override
@@ -140,6 +164,11 @@ public class LivingItemEntity extends Mob {
 				animationOffset = new Vec3(0, Mth.sin(tickCount * Mth.PI / 35f) * 0.4 + 0.5, 0);
 				animationRotation = new Vec3(0, 0, Mth.HALF_PI + tickCount * Mth.HALF_PI / 30f);
 				break;
+			}
+		} else {
+			if (receiver != null && moveCooldown-- == 0) {
+				getNavigation().moveTo(receiver.getX() + 0.5, receiver.getY() + 1, receiver.getZ() + 0.5, 1);
+				moveCooldown = MOVE_COOLDOWN;
 			}
 		}
 	}
