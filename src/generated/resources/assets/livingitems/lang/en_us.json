@@ -1,5 +1,5 @@
 {
-  "block.livingitems.item_awakener": "Item Awakener",
+  "block.livingitems.item_awakener": "Sculk Item Awakener",
   "entity.livingitems.living_item": "Living Item",
   "gui.livingitems.allowlist": "Allowlist",
   "gui.livingitems.denylist": "Denylist",
@@ -9,5 +9,6 @@
   "gui.livingitems.help.sender_toggle": "Toggle if this Awakener should be receiver or sender. Sender extracts items from a container and receiver inserts into a container.",
   "gui.livingitems.id_box_default": "id...",
   "gui.livingitems.receiver": "Receiver",
-  "gui.livingitems.sender": "Sender"
+  "gui.livingitems.sender": "Sender",
+  "itemGroup.livingitems": "Living Items"
 }

@@ -15,7 +15,9 @@ public class ModLanguageProvider extends LanguageProvider {
 	@Override
 	protected void addTranslations() {
 		add(ModEntities.LIVING_ITEM.get(), "Living Item");
-		add(ModBlocks.ITEM_AWAKENER.get(), "Item Awakener");
+		add(ModBlocks.ITEM_AWAKENER.get(), "Sculk Item Awakener");
+		
+		add("itemGroup." + Main.MODID, "Living Items");
 
 		addGui("denylist", "Denylist");
 		addGui("allowlist", "Allowlist");

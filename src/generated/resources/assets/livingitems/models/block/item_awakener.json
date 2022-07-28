@@ -1,7 +1,223 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#bottom",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#side",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "north": {
+          "texture": "#side",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#side",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#top",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#side",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        15,
+        4,
+        15
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "texture": "#spike",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "north": {
+          "texture": "#spike",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#spike",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#spike",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        2,
+        4,
+        2
+      ],
+      "to": [
+        14,
+        8,
+        14
+      ]
+    },
+    {
+      "faces": {
+        "north": {
+          "texture": "#spike",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        2,
+        4,
+        13.98
+      ],
+      "to": [
+        14,
+        8,
+        13.98
+      ]
+    },
+    {
+      "faces": {
+        "south": {
+          "texture": "#spike",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        2,
+        4,
+        2.02
+      ],
+      "to": [
+        14,
+        8,
+        2.02
+      ]
+    },
+    {
+      "faces": {
+        "west": {
+          "texture": "#spike",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        13.98,
+        4,
+        2
+      ],
+      "to": [
+        13.98,
+        8,
+        14
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "texture": "#spike",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        2.02,
+        4,
+        2
+      ],
+      "to": [
+        2.02,
+        8,
+        16
+      ]
+    }
+  ],
   "render_type": "minecraft:cutout",
   "textures": {
-    "all": "livingitems:block/item_awakener"
+    "bottom": "livingitems:block/item_awakener_bottom",
+    "particle": "livingitems:block/item_awakener_top",
+    "side": "livingitems:block/item_awakener_side",
+    "spike": "livingitems:block/item_awakener_spike",
+    "top": "livingitems:block/item_awakener_top"
   }
 }
