@@ -13,6 +13,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,7 +26,13 @@ public class ItemAwakenerScreen extends AbstractContainerScreen<ItemAwakenerMenu
 	private static final Component ID_BOX_DEFAULT = (new TranslatableComponent(
 			Main.guiTranslationKey("id_box_default"))).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY);
 
+	private static final int INFO_BUTTON_SIZE = 9;
+	private static final int INFO_BUTTON_RIGHT_OFFSET = 14;
+	private static final int INFO_BUTTON_TOP_OFFSET = 5;
+
 	private EditBox linkIdBox;
+	private Button toggleDenylist;
+	private Button toggleSender;
 
 	public ItemAwakenerScreen(ItemAwakenerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
 		super(pMenu, pPlayerInventory, pTitle);
@@ -39,7 +46,7 @@ public class ItemAwakenerScreen extends AbstractContainerScreen<ItemAwakenerMenu
 		super.init();
 
 		// Denylist/allowlist toggle
-		var toggleDenylist = addRenderableWidget(new Button(leftPos + 124 - 70 / 2, topPos + 10, 70, 20,
+		toggleDenylist = addRenderableWidget(new Button(leftPos + 124 - 70 / 2, topPos + 10, 70, 20,
 				new TranslatableComponent(Main.guiTranslationKey(menu.isDenylistEnabled() ? "denylist" : "allowlist")),
 				(b) -> {
 					menu.toggleDenylist();
@@ -49,7 +56,7 @@ public class ItemAwakenerScreen extends AbstractContainerScreen<ItemAwakenerMenu
 		toggleDenylist.visible = menu.isSender();
 
 		// Sender/Receiver toggle
-		addRenderableWidget(new Button(leftPos + 40 - 60 / 2, topPos + 65, 60, 20,
+		toggleSender = addRenderableWidget(new Button(leftPos + 40 - 60 / 2, topPos + 65, 60, 20,
 				new TranslatableComponent(Main.guiTranslationKey(menu.isSender() ? "sender" : "receiver")), (b) -> {
 					menu.toggleSender();
 					toggleDenylist.visible = menu.isSender();
@@ -78,7 +85,9 @@ public class ItemAwakenerScreen extends AbstractContainerScreen<ItemAwakenerMenu
 		linkIdBox.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
 		if (!linkIdBox.isFocused() && linkIdBox.getValue().isEmpty())
 			drawString(pPoseStack, minecraft.font, ID_BOX_DEFAULT, linkIdBox.x + 4, linkIdBox.y + 4, 0xffffffff);
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1, 1, 1, 1);
+		RenderSystem.setShaderTexture(0, BACKGROUND);
 
 		// Hide filter slots if item awakener is receiver
 		if (!menu.isSender())
@@ -89,6 +98,35 @@ public class ItemAwakenerScreen extends AbstractContainerScreen<ItemAwakenerMenu
 					topPos + ItemAwakenerMenu.FILTER_TOP_OFFSET
 							+ ItemAwakenerMenu.FILTER_LENGTH * ItemAwakenerMenu.SLOT_SIZE,
 					0xffc6c6c6);
+
+		// Help texts
+		var isHoveringInfo = isHovering(imageWidth - INFO_BUTTON_RIGHT_OFFSET, INFO_BUTTON_TOP_OFFSET, INFO_BUTTON_SIZE,
+				INFO_BUTTON_SIZE, pMouseX, pMouseY);
+		blit(pPoseStack, leftPos + imageWidth - INFO_BUTTON_RIGHT_OFFSET, topPos + INFO_BUTTON_TOP_OFFSET,
+				isHoveringInfo ? INFO_BUTTON_SIZE : 0, imageHeight, INFO_BUTTON_SIZE, INFO_BUTTON_SIZE);
+		if (isHoveringInfo) {
+			renderHelpText(pPoseStack, 0, linkIdBox.y - 25,
+					new TranslatableComponent(Main.guiTranslationKey("help.id_box")), linkIdBox.x);
+
+			renderHelpText(pPoseStack, 0, toggleSender.y + 30,
+					new TranslatableComponent(Main.guiTranslationKey("help.sender_toggle")), toggleSender.x);
+
+			renderHelpText(pPoseStack, toggleDenylist.x + toggleDenylist.getWidth(), toggleDenylist.y,
+					new TranslatableComponent(Main.guiTranslationKey("help.allowlist_toggle")), 130);
+
+			renderHelpText(pPoseStack, toggleDenylist.x + toggleDenylist.getWidth() - 40, toggleDenylist.y + 100,
+					new TranslatableComponent(Main.guiTranslationKey("help.filter")), 150);
+		}
+	}
+
+	@Override
+	public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+		super.render(pPoseStack, pMouseX, pMouseY, pPartialTick);
+		renderTooltip(pPoseStack, pMouseX, pMouseY);
+	}
+
+	private void renderHelpText(PoseStack pPoseStack, int x, int y, Component text, int maxLength) {
+		renderTooltip(pPoseStack, font.split(text, maxLength), x, y);
 	}
 
 	@Override

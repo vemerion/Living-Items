@@ -22,6 +22,11 @@ public class ModLanguageProvider extends LanguageProvider {
 		addGui("sender", "Sender");
 		addGui("receiver", "Receiver");
 		addGui("id_box_default", "id...");
+		
+		addGui("help.id_box", "The id is used to link together receiver and sender Awakeners. One receiver can be linked to many senders.");
+		addGui("help.sender_toggle", "Toggle if this Awakener should be receiver or sender. Sender extracts items from a container and receiver inserts into a container.");
+		addGui("help.allowlist_toggle", "Toggle if this Awakener should have allowlist (only extract items in filter) or denylist (extract all items NOT in filter). Only used for Senders.");
+		addGui("help.filter", "Item slots for the allowlist/denylist.");
 	}
 
 	void addGui(String suffix, String translation) {

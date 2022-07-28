@@ -3,6 +3,10 @@
   "entity.livingitems.living_item": "Living Item",
   "gui.livingitems.allowlist": "Allowlist",
   "gui.livingitems.denylist": "Denylist",
+  "gui.livingitems.help.allowlist_toggle": "Toggle if this Awakener should have allowlist (only extract items in filter) or denylist (extract all items NOT in filter). Only used for Senders.",
+  "gui.livingitems.help.filter": "Item slots for the allowlist/denylist.",
+  "gui.livingitems.help.id_box": "The id is used to link together receiver and sender Awakeners. One receiver can be linked to many senders.",
+  "gui.livingitems.help.sender_toggle": "Toggle if this Awakener should be receiver or sender. Sender extracts items from a container and receiver inserts into a container.",
   "gui.livingitems.id_box_default": "id...",
   "gui.livingitems.receiver": "Receiver",
   "gui.livingitems.sender": "Sender"
