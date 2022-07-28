@@ -15,8 +15,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
-		var itemAwakenerModel = models().cubeAll(ModBlocks.ITEM_AWAKENER.get().getRegistryName().getPath(),
-				modLoc(ModelProvider.BLOCK_FOLDER + "/" + ModBlocks.ITEM_AWAKENER.get().getRegistryName().getPath()));
+		var itemAwakenerModel = models()
+				.cubeAll(ModBlocks.ITEM_AWAKENER.getId().getPath(),
+						modLoc(ModelProvider.BLOCK_FOLDER + "/" + ModBlocks.ITEM_AWAKENER.getId().getPath()))
+				.renderType("cutout");
 		directionalBlock(ModBlocks.ITEM_AWAKENER.get(), itemAwakenerModel);
 		simpleBlockItem(ModBlocks.ITEM_AWAKENER.get(), itemAwakenerModel);
 	}

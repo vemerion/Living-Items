@@ -9,7 +9,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModBlocksEntities {
 	public static final DeferredRegister<BlockEntityType<?>> BLOCKS_ENTITIES = DeferredRegister
-			.create(ForgeRegistries.BLOCK_ENTITIES, Main.MODID);
+			.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Main.MODID);
 
 	public static final RegistryObject<BlockEntityType<ItemAwakenerBlockEntity>> ITEM_AWAKENER = BLOCKS_ENTITIES
 			.register("item_awakener", () -> BlockEntityType.Builder

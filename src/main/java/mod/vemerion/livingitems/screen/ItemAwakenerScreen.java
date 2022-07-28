@@ -13,8 +13,6 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -23,8 +21,8 @@ public class ItemAwakenerScreen extends AbstractContainerScreen<ItemAwakenerMenu
 	private static final ResourceLocation BACKGROUND = new ResourceLocation(Main.MODID,
 			"textures/gui/item_awakener.png");
 
-	private static final Component ID_BOX_DEFAULT = (new TranslatableComponent(
-			Main.guiTranslationKey("id_box_default"))).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY);
+	private static final Component ID_BOX_DEFAULT = (Component.translatable(Main.guiTranslationKey("id_box_default")))
+			.withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY);
 
 	private static final int INFO_BUTTON_SIZE = 9;
 	private static final int INFO_BUTTON_RIGHT_OFFSET = 14;
@@ -47,21 +45,21 @@ public class ItemAwakenerScreen extends AbstractContainerScreen<ItemAwakenerMenu
 
 		// Denylist/allowlist toggle
 		toggleDenylist = addRenderableWidget(new Button(leftPos + 124 - 70 / 2, topPos + 10, 70, 20,
-				new TranslatableComponent(Main.guiTranslationKey(menu.isDenylistEnabled() ? "denylist" : "allowlist")),
+				Component.translatable(Main.guiTranslationKey(menu.isDenylistEnabled() ? "denylist" : "allowlist")),
 				(b) -> {
 					menu.toggleDenylist();
-					b.setMessage(new TranslatableComponent(
-							Main.guiTranslationKey(menu.isDenylistEnabled() ? "denylist" : "allowlist")));
+					b.setMessage(Component
+							.translatable(Main.guiTranslationKey(menu.isDenylistEnabled() ? "denylist" : "allowlist")));
 				}));
 		toggleDenylist.visible = menu.isSender();
 
 		// Sender/Receiver toggle
 		toggleSender = addRenderableWidget(new Button(leftPos + 40 - 60 / 2, topPos + 65, 60, 20,
-				new TranslatableComponent(Main.guiTranslationKey(menu.isSender() ? "sender" : "receiver")), (b) -> {
+				Component.translatable(Main.guiTranslationKey(menu.isSender() ? "sender" : "receiver")), (b) -> {
 					menu.toggleSender();
 					toggleDenylist.visible = menu.isSender();
 					b.setMessage(
-							new TranslatableComponent(Main.guiTranslationKey(menu.isSender() ? "sender" : "receiver")));
+							Component.translatable(Main.guiTranslationKey(menu.isSender() ? "sender" : "receiver")));
 				}));
 
 		// Id text box
@@ -106,16 +104,16 @@ public class ItemAwakenerScreen extends AbstractContainerScreen<ItemAwakenerMenu
 				isHoveringInfo ? INFO_BUTTON_SIZE : 0, imageHeight, INFO_BUTTON_SIZE, INFO_BUTTON_SIZE);
 		if (isHoveringInfo) {
 			renderHelpText(pPoseStack, 0, linkIdBox.y - 25,
-					new TranslatableComponent(Main.guiTranslationKey("help.id_box")), linkIdBox.x);
+					Component.translatable(Main.guiTranslationKey("help.id_box")), linkIdBox.x);
 
 			renderHelpText(pPoseStack, 0, toggleSender.y + 30,
-					new TranslatableComponent(Main.guiTranslationKey("help.sender_toggle")), toggleSender.x);
+					Component.translatable(Main.guiTranslationKey("help.sender_toggle")), toggleSender.x);
 
 			renderHelpText(pPoseStack, toggleDenylist.x + toggleDenylist.getWidth(), toggleDenylist.y,
-					new TranslatableComponent(Main.guiTranslationKey("help.allowlist_toggle")), 130);
+					Component.translatable(Main.guiTranslationKey("help.allowlist_toggle")), 130);
 
 			renderHelpText(pPoseStack, toggleDenylist.x + toggleDenylist.getWidth() - 40, toggleDenylist.y + 100,
-					new TranslatableComponent(Main.guiTranslationKey("help.filter")), 150);
+					Component.translatable(Main.guiTranslationKey("help.filter")), 150);
 		}
 	}
 

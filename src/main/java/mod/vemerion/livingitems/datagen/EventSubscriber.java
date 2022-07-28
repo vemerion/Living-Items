@@ -3,10 +3,10 @@ package mod.vemerion.livingitems.datagen;
 import mod.vemerion.livingitems.Main;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 @EventBusSubscriber(bus = Bus.MOD, modid = Main.MODID)
 public class EventSubscriber {
@@ -16,12 +16,7 @@ public class EventSubscriber {
 		DataGenerator generator = event.getGenerator();
 
 		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
-
-		if (event.includeServer()) {
-		}
-		if (event.includeClient()) {
-			generator.addProvider(new ModLanguageProvider(generator));
-			generator.addProvider(new ModBlockStateProvider(generator, existingFileHelper));
-		}
+		generator.addProvider(event.includeClient(), new ModLanguageProvider(generator));
+		generator.addProvider(event.includeClient(), new ModBlockStateProvider(generator, existingFileHelper));
 	}
 }

@@ -157,7 +157,7 @@ public class ItemAwakenerBlockEntity extends BlockEntity implements MenuProvider
 	}
 
 	public void openGui(ServerPlayer player) {
-		NetworkHooks.openGui(player, this, buffer -> {
+		NetworkHooks.openScreen(player, this, buffer -> {
 			data.writeToBuffer(buffer);
 			buffer.writeBlockPos(worldPosition);
 		});
