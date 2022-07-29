@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sculk_or_shrieker": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:sculk",
+              "minecraft:sculk_shrieker"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "livingitems:item_awakener"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_sculk_or_shrieker",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "livingitems:item_awakener"
+    ]
+  }
+}

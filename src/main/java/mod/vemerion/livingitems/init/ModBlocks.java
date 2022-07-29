@@ -16,5 +16,5 @@ public class ModBlocks {
 
 	public static final RegistryObject<Block> ITEM_AWAKENER = BLOCKS.register("item_awakener",
 			() -> new ItemAwakenerBlock(BlockBehaviour.Properties.of(Material.SCULK, MaterialColor.COLOR_BLACK)
-					.isViewBlocking((s, g, p) -> false).strength(1, 3).sound(SoundType.SCULK_SHRIEKER))); // TODO: Crafting recipe
+					.isViewBlocking((s, g, p) -> false).strength(1, 3).sound(SoundType.SCULK_SHRIEKER)));
 }

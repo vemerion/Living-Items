@@ -20,5 +20,6 @@ public class EventSubscriber {
 		generator.addProvider(event.includeClient(), new ModBlockStateProvider(generator, existingFileHelper));
 		generator.addProvider(event.includeServer(), new ModBlockTagsProvider(generator, existingFileHelper));
 		generator.addProvider(event.includeServer(), new ModLootTableProvider(generator));
+		generator.addProvider(event.includeServer(), new ModRecipeProvider(generator));
 	}
 }

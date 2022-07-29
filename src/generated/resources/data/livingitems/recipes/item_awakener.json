@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:sculk"
+    },
+    "X": {
+      "item": "minecraft:sculk_shrieker"
+    }
+  },
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "result": {
+    "item": "livingitems:item_awakener"
+  }
+}
