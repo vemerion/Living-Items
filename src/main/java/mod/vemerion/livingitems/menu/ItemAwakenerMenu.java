@@ -70,8 +70,12 @@ public class ItemAwakenerMenu extends AbstractContainerMenu {
 	}
 
 	@Override
-	public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
-		return ItemStack.EMPTY; // TODO
+	public ItemStack quickMoveStack(Player player, int index) {
+		Slot slot = getSlot(index);
+		if (slot != null && slot.hasItem() && index > ItemAwakenerBlockEntity.FILTER_SIZE)
+			moveItemStackTo(slot.getItem().copy(), 0, ItemAwakenerBlockEntity.FILTER_SIZE, false);
+
+		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -134,6 +138,11 @@ public class ItemAwakenerMenu extends AbstractContainerMenu {
 	// Sync values from client to server
 	public void sendMessage() {
 		Network.INSTANCE.sendToServer(new ItemAwakenerMessage(data, pos));
+	}
+
+	@Override
+	public boolean canTakeItemForPickAll(ItemStack p_38908_, Slot p_38909_) {
+		return false;
 	}
 
 }
