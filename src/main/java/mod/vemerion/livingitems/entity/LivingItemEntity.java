@@ -17,7 +17,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.horse.Llama;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -28,9 +27,9 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 public class LivingItemEntity extends Mob {
 
-	private static final EntityDataAccessor<Byte> ANIMATION_VARIANT = SynchedEntityData.defineId(Llama.class,
+	private static final EntityDataAccessor<Byte> ANIMATION_VARIANT = SynchedEntityData.defineId(LivingItemEntity.class,
 			EntityDataSerializers.BYTE);
-	private static final EntityDataAccessor<ItemStack> ITEM_STACK = SynchedEntityData.defineId(Llama.class,
+	private static final EntityDataAccessor<ItemStack> ITEM_STACK = SynchedEntityData.defineId(LivingItemEntity.class,
 			EntityDataSerializers.ITEM_STACK);
 
 	private static final int MOVE_COOLDOWN = 40;
@@ -50,7 +49,7 @@ public class LivingItemEntity extends Mob {
 	private Vec3 animationScale0 = new Vec3(1, 1, 1);
 
 	private BlockPos receiver;
-	private int moveCooldown = MOVE_COOLDOWN;
+	private int moveCooldown = 5;
 
 	public LivingItemEntity(EntityType<? extends LivingItemEntity> type, Level level) {
 		super(type, level);
@@ -104,7 +103,7 @@ public class LivingItemEntity extends Mob {
 	public ItemStack getItemStack() {
 		return entityData.get(ITEM_STACK);
 	}
-	
+
 	public BlockPos getReceiver() {
 		return receiver;
 	}

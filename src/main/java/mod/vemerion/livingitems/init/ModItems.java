@@ -1,10 +1,12 @@
 package mod.vemerion.livingitems.init;
 
 import mod.vemerion.livingitems.Main;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -23,6 +25,11 @@ public class ModItems {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Main.MODID);
 
 	public static final RegistryObject<Item> ITEM_AWAKENER = ITEMS.register("item_awakener",
-			() -> new BlockItem(ModBlocks.ITEM_AWAKENER.get(), new Item.Properties().tab(ITEM_TAB)));
+			() -> new BlockItem(ModBlocks.ITEM_AWAKENER.get(), new Item.Properties().tab(ITEM_TAB)) {
+				public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
+					var result = stack.useOn(context);
+					return result == InteractionResult.FAIL ? InteractionResult.PASS : result;
+				};
+			});
 
 }
